@@ -41,7 +41,7 @@ beforeEach( async ()=>{
 describe('When there is initially some blogs saved', ()=>{
   test('blogs are returned as json', async ()=>{
     await api
-      .get('/api/blog')
+      .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
@@ -71,7 +71,7 @@ describe('Adding a new blog to the database', ()=>{
       }
 
     await api
-      .post('/api/blog/')
+      .post('/api/blogs/')
       .send(newEntry)
       .set('Authorization', 'Bearer ' + auth) 
       .expect(201)
@@ -92,7 +92,7 @@ describe('Adding a new blog to the database', ()=>{
         url: "https://entrywithnolikes.com/" 
       }
 
-    await api.post('/api/blog/')
+    await api.post('/api/blogs/')
       .send(noLikesProp)
       .set('Authorization', 'Bearer ' + auth) 
     
@@ -113,7 +113,7 @@ describe('Adding a new blog to the database', ()=>{
     }
 
     await api
-    .post('/api/blog/')
+    .post('/api/blogs/')
     .send(newEntry)
     .expect(401)
   })
@@ -126,7 +126,7 @@ describe('Adding a new blog to the database', ()=>{
         likes: 7
       }
   
-    await api.post('/api/blog/')
+    await api.post('/api/blogs/')
       .send(noTitleProp)
       .set('Authorization', 'Bearer ' + auth) 
       .expect(400)
@@ -140,7 +140,7 @@ describe('Adding a new blog to the database', ()=>{
         likes: 7
       }
   
-    await api.post('/api/blog/')
+    await api.post('/api/blogs/')
       .send(noURLProp)
       .set('Authorization', 'Bearer ' + auth) 
       .expect(400)
@@ -160,14 +160,14 @@ describe('When a blog entry is deleted', ()=>{
 
     await Blog.deleteMany({})
     await api
-      .post('/api/blog')
+      .post('/api/blogs')
       .send(mockBlog)
       .set('Authorization', 'Bearer ' + auth) 
 
     const allBlogs = await testHelper.blogsReturned()
 
     await api
-      .delete(`/api/blog/${allBlogs[0].id}`)
+      .delete(`/api/blogs/${allBlogs[0].id}`)
       .set('Authorization', 'Bearer ' + auth) 
       .expect(204)
 
@@ -184,7 +184,7 @@ describe('when a blog entry is updated', ()=>{
     entryToModify.likes = 100000
 
     await api
-      .put(`/api/blog/${entryToModify.id}`)
+      .put(`/api/blogs/${entryToModify.id}`)
       .send(entryToModify)
 
     const allBlogsAfter = await testHelper.blogsReturned()
