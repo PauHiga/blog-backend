@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -60,14 +59,17 @@ blogRouter.delete('/:id', middleware.userExtractor, async(request, response)=>{
 
 blogRouter.put('/:id', async(request, response)=>{
   const body = request.body
+
   const updatedEntry = {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
+    creator:body.creator
   }
 
   await Blog.findByIdAndUpdate(request.params.id, updatedEntry, {new : true})
+
   response.json(updatedEntry)
 })
 
